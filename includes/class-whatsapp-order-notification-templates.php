@@ -173,21 +173,21 @@ class Whatsapp_Order_Notification_Templates {
             <form id="template-form" method="post" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
                 <input type="hidden" name="template_id" value="<?php echo $template_id; ?>">
                 
-                <table class="form-table" style="padding: 20px; border-radius: 5px; background-color: #f9f9f9;">
+                <table class="form-table" style="border-radius: 5px; background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd;">
                     <tr>
-                        <th scope="row">
+                        <th scope="row" style="padding: 20px;">
                             <label for="template_name"><?php _e('Template Name', 'whatsapp-order-notification-boostala'); ?></label>
                         </th>
-                        <td>
-                            <input type="text" name="template_name" id="template_name" 
+                        <td style="padding: 20px;">
+                            <input type="text" name="template_name" id="template_name" readonly="readonly"
                                    value="<?php echo $template ? esc_attr($template->name) : ''; ?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">
+                        <th scope="row" style="padding: 20px;">
                             <label for="template_content"><?php _e('Template Content', 'whatsapp-order-notification-boostala'); ?></label>
                         </th>
-                        <td>
+                        <td style="padding: 20px;">
                             <textarea name="template_content" id="template_content" rows="10" class="large-text"><?php 
                                 echo $template ? esc_textarea($template->content) : ''; 
                             ?></textarea>
@@ -202,10 +202,10 @@ class Whatsapp_Order_Notification_Templates {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">
+                        <th scope="row" style="padding: 20px;">
                             <label for="template_status"><?php _e('Status', 'whatsapp-order-notification-boostala'); ?></label>
                         </th>
-                        <td>
+                        <td style="padding: 20px;">
                             <select name="template_status" id="template_status">
                                 <option value="1" <?php selected($template ? $template->status : 1, 1); ?>>
                                     <?php _e('Active', 'whatsapp-order-notification-boostala'); ?>
@@ -218,16 +218,13 @@ class Whatsapp_Order_Notification_Templates {
                     </tr>
                 </table>
 
-                <?php if (isset($_GET['error']) && $_GET['error'] === '1'): ?>
-                    <button type="submit" class="button button-primary" id="save-template-button">
-                        <p><?php _e('An error occurred while saving the template. Please try again.', 'whatsapp-order-notification-boostala'); ?></p>
-                    </div>
-                <?php endif; ?>
+             
 
-                <p class="submit">
+                <p class="submit" style="padding: 20px;">
                     <button type="submit" class="button button-primary">
                         <?php _e('Save Template', 'whatsapp-order-notification-boostala'); ?>
                     </button>
+                </p>
             </form>
         </div>
         <?php
@@ -242,12 +239,7 @@ class Whatsapp_Order_Notification_Templates {
         $status = isset($_POST['template_status']) ? intval($_POST['template_status']) : 0;
 
         $response = $this->save_template_to_api($template_id, $name, $content, $status);
-
-        if (is_wp_error($response)) {
-            wp_send_json_error(array('message' => $response->get_error_message()));
-        }
-
-        wp_send_json_success(array('message' => __('Template saved successfully', 'whatsapp-order-notification-boostala')));
+        wp_send_json_success($response);
     }
 
     public function update_template_status() {
@@ -256,13 +248,48 @@ class Whatsapp_Order_Notification_Templates {
         $template_id = isset($_POST['template_id']) ? intval($_POST['template_id']) : 0;
         $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
 
-        $response = $this->update_template_status_in_api($template_id, $status);
+        $device = $this->get_active_device();
 
-        if (is_wp_error($response)) {
-            wp_send_json_error(array('message' => $response->get_error_message()));
+        if (!$device) {
+            return new WP_Error('no_device', __('No active device found', 'whatsapp-order-notification-boostala'));
         }
 
-        wp_send_json_success(array('message' => __('Status updated successfully', 'whatsapp-order-notification-boostala')));
+        $response = wp_remote_request($this->api_base_url . '/templates/' . $template_id . '/status', array(
+            'method' => 'POST',
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $device->api_key,
+                'Content-Type' => 'application/json'
+            ),
+            'body' => json_encode(array(
+                'status' => $status
+            ))
+        ));
+
+        if (is_wp_error($response)) {
+            return $response;
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body);
+      
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return new WP_Error('json_error', __('JSON decode error: ', 'whatsapp-order-notification-boostala') . json_last_error_msg());
+        }
+
+        if (isset($data->error)) {
+            return new WP_Error('api_error', __('API error: ', 'whatsapp-order-notification-boostala') . $data->error);
+        }
+
+
+        if (isset($data->status)) {
+            wp_send_json_success(array('message' => __('Template status updated successfully', 'whatsapp-order-notification-boostala')));
+        } else {
+            wp_send_json_error(array('message' => __('Failed to update template status', 'whatsapp-order-notification-boostala')));
+        }
+
+
+    
+        
     }
 
     private function get_templates_from_api() {
@@ -351,17 +378,15 @@ class Whatsapp_Order_Notification_Templates {
             return new WP_Error('no_device', __('No active device found', 'whatsapp-order-notification-boostala'));
         }
 
-        $endpoint = $id ? '/templates/' . $id : '/content';
-        $method = $id ? 'PUT' : 'POST';
+        $endpoint = '/templates/' . $id . '/content';
 
         $response = wp_remote_request($this->api_base_url . $endpoint, array(
-            'method' => $method,
+            'method' => 'POST',
             'headers' => array(
-                'Authorization' => 'Bearer ' . $device->token,
+                'Authorization' => 'Bearer ' . $device->api_key,
                 'Content-Type' => 'application/json'
             ),
             'body' => json_encode(array(
-                'name' => $name,
                 'content' => $content,
                 'status' => $status
             ))
@@ -381,36 +406,7 @@ class Whatsapp_Order_Notification_Templates {
         return $data;
     }
 
-    private function update_template_status_in_api($id, $status) {
-        $device = $this->get_active_device();
-        if (!$device) {
-            return new WP_Error('no_device', __('No active device found', 'whatsapp-order-notification-boostala'));
-        }
 
-        $response = wp_remote_request($this->api_base_url . '/templates/' . $id . '/status', array(
-            'method' => 'PUT',
-            'headers' => array(
-                'Authorization' => 'Bearer ' . $device->token,
-                'Content-Type' => 'application/json'
-            ),
-            'body' => json_encode(array(
-                'status' => $status
-            ))
-        ));
-
-        if (is_wp_error($response)) {
-            return $response;
-        }
-
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body);
-
-        if (isset($data->error)) {
-            return new WP_Error('api_error', $data->error);
-        }
-
-        return $data;
-    }
 
  
 

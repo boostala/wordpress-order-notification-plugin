@@ -29,6 +29,10 @@ class Whatsapp_Order_Notification {
         add_action('wp_ajax_wponb_check_device_status', array($this, 'check_device_status'));
         add_action('wp_ajax_wponb_validate_token', array($this, 'validate_token'));
         add_action('wp_ajax_wponb_logout', array($this, 'handle_logout'));
+
+        // Add WooCommerce hooks
+        add_action('woocommerce_order_status_changed', array($this, 'handle_order_status_change'), 10, 4);
+        add_action('woocommerce_new_order', array($this, 'handle_new_order'), 10, 1);
     }
 
     /**
@@ -358,4 +362,4 @@ class Whatsapp_Order_Notification {
         </div>
         <?php
     }
-} 
+}

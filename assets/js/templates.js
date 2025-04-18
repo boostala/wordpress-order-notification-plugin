@@ -22,34 +22,5 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Handle status toggle
-    $('.toggle-status').on('click', function() {
-        const button = $(this);
-        const templateId = button.data('id');
-        const currentStatus = button.data('status');
-        const newStatus = currentStatus ? 0 : 1;
-
-        const data = {
-            action: 'wponb_update_template_status',
-            nonce: wponb_templates.nonce,
-            template_id: templateId,
-            status: newStatus
-        };
-
-        $.post(wponb_templates.ajax_url, data, function(response) {
-            if (response.success) {
-                // Update button text and data-status
-                button.data('status', newStatus);
-                button.text(newStatus ? 'Disable' : 'Enable');
-                
-                // Update status span
-                const statusSpan = button.closest('tr').find('.template-status');
-                statusSpan.removeClass('active inactive')
-                    .addClass(newStatus ? 'active' : 'inactive')
-                    .text(newStatus ? 'Active' : 'Inactive');
-            } else {
-                alert(response.data.message);
-            }
-        });
-    });
+   
 }); 
