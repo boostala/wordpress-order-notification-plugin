@@ -1,0 +1,99 @@
+# Copyright (C) 2024 Boostala
+# This file is distributed under the same license as the WhatsApp Order Notification Boostala plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WhatsApp Order Notification Boostala 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/whatsapp-order-notification-boostala\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: whatsapp-order-notification-boostala\n"
+
+#: includes/class-whatsapp-order-notification.php:123
+msgid "Device Status"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:124
+msgid "Not connected to Boostala"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:125
+msgid "Login with Boostala"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:126
+msgid "Checking device status..."
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:127
+msgid "Device successfully connected!"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:128
+msgid "Successfully logged out"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:129
+msgid "Failed to logout"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:130
+msgid "Welcome to Boostala WhatsApp"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:131
+msgid "About Boostala"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:132
+msgid "Boostala is a powerful WhatsApp integration platform that helps you connect with your customers through WhatsApp Business API. Our platform provides:"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:133
+msgid "Automated WhatsApp notifications for orders"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:134
+msgid "Customer support through WhatsApp"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:135
+msgid "Marketing campaigns via WhatsApp"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:136
+msgid "Real-time order updates"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:137
+msgid "Connected to Boostala"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:138
+msgid "Device ID:"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:139
+msgid "Logout"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:140
+msgid "Need Help?"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:141
+msgid "Our support team is here to help you with any questions or issues you might have:"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:142
+msgid "Email: support@boostala.com"
+msgstr ""
+
+#: includes/class-whatsapp-order-notification.php:143
+msgid "Website: https://boostala.com"
+msgstr "" 

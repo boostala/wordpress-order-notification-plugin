@@ -1,0 +1,66 @@
+.boostala-templates-container {
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.boostala-templates-list {
+    margin-top: 20px;
+}
+
+.template-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.template-status.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.template-status.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.boostala-template-edit {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.boostala-template-edit .form-table {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.boostala-template-edit .form-table th {
+    width: 200px;
+}
+
+.boostala-template-edit .form-table td {
+    padding: 15px 0;
+}
+
+.boostala-template-edit .description {
+    margin-top: 10px;
+    color: #666;
+}
+
+.boostala-template-edit .submit {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.wp-list-table .column-actions {
+    width: 200px;
+}
+
+.wp-list-table .button {
+    margin-right: 5px;
+} 
